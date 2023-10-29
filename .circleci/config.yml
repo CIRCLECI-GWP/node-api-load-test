@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  heroku: circleci/node@5.1.0
+  node: circleci/node@5.1.0
 jobs:
   build-and-deploy:
     docker:
