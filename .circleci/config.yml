@@ -26,7 +26,7 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install apache2-utils
-            ab -k -c 20 -n 250 https://<HEROKU_APP_NAME>-<RANDOM_NUMBER>.herokuapp.com/users/get
+            ab -k -c 20 -n 250 https://node-api-load-test-95e579334e39.herokuapp.com/users/get
 
 workflows:
   deploy:
