@@ -1,0 +1,37 @@
+version: 2.1
+
+orbs:
+  heroku: circleci/node@5.1.0
+jobs:
+  build-and-deploy:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - checkout
+      - node/install
+      - run:
+          command: npm install
+          name: Install dependencies
+      - run:
+          name: Deploy app to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
+
+  load-test-api:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - run:
+          name: Run Load Test
+          command: |
+            sudo apt-get update
+            sudo apt-get install apache2-utils
+            ab -k -c 20 -n 250 https://<HEROKU_APP_NAME>-<RANDOM_NUMBER>.herokuapp.com/users/get
+
+workflows:
+  deploy:
+    jobs:
+      - build-and-deploy
+      - load-test-api:
+          requires:
+            - build-and-deploy
